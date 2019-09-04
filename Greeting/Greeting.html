@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<header style="background-color: #669999; height: 100px;margin: 0px; padding: 0px; overflow: hidden;">
+    <title>
+        WebDev Greeting
+    </title>
+    <p style="text-align:center; font-size: 35px">
+        Hi my name is Anthony Nagal, please click on my face to learn more about me.
+    </p>
+</header>
+
+<body bgcolor="#339933">
+    <script>
+        function displayText() {
+            document.getElementById("text").style.display = "block";
+        }
+        function displayColor() {
+            document.getElementById("colors").style.display = "block";
+        }
+        function changeColor() {
+            console.log(document.getElementsByName("colorvalue"[0].value));
+            document.getElementById("text").style.color = document.getElementsByName("colorvalue")[0].value;           
+        }
+
+    </script>
+    <div style="float: left;">
+        <input type="image" src="IMG_0436.jpg" alt="Picture of me" style="width: 350px; height: 750px;"
+            onclick="displayText()" />
+    </div>
+    <div id="text" style="font-size: 45px; display: none; color: none;">
+        <p>
+            (If you would like to change the text color please click <button id="color"
+                style="background-color:#339933; font-size: 45px;" " onclick=" displayColor()">here</button>)<br>
+            I'm a student at the University of Cincinnati currently working towards a major in Information Technology
+            with a minor in computer science.
+            some of my favorite games include:
+            <ul style="float:left; margin-left: 20px; margin-top: -30px;">
+                <li>World of Warcraft</li>
+                <li>Phantasy Star Universe</li>
+                <li>League of Legends</li>
+                <li>Call of Duty: Modern Warfare 2</li>
+            </ul>
+        </p>
+        <p style="float: left; margin-top: -280px; margin-left: 351px">
+            Currently most of my spare time is being spent playing World of Warcraft: Classic and it's been a lot of
+            fun.
+        </p>
+    </div>
+</body>
+<footer style="position: fixed; bottom: 0; left: 0;">
+    <style>
+        ul.styleOne {
+            display: none;
+            list-style: none;
+            text-align: center;
+            font-size: 65px;
+        }
+
+        li.styleTwo {
+            padding: 25px;
+            display: inline;
+        }
+    </style>
+    <ul class="styleOne" id="colors">
+        <li class="styleTwo">Red</li>
+        <li class="styleTwo">Blue</li>
+        <li class="styleTwo">Yellow</li>
+        <li class="styleTwo">Orange</li>
+        <li class="styleTwo">Black</li>
+        <li class="styleTwo">Font Color: <input type="text" name="colorvalue" value="" id="textArea"/><button id="confirm" onclick=" changeColor()">confirm</button></li>
+    </ul>
+</footer>
+
+</html>
