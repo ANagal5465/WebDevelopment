@@ -1,0 +1,24 @@
+.picColumn {
+    display: inline-block;
+    vertical-align: top;
+  }
+ .textColumn{
+     display:inline-block;
+ } 
+
+
+.center{
+      display:block;
+      margin-left: auto;
+      margin-right: auto;
+      width: 50%;
+  }
+.footer {
+    background-color: grey;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+    overflow: hidden;
+}

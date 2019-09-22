@@ -1,0 +1,94 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+         <link rel="stylesheet" type="text/css" href="display.css">
+        <title>
+            RockPaperScissors!
+        </title>
+        <p style="text-align:center; font-size: 35px">
+            Are you ready to play some Rock Paper Scissors?
+        </p>
+        <script>
+            function playerChoice(){
+                //holds pMove string value
+                var pMove = document.getElementById('a').value;
+                //pMove int value
+                var intPMove = 0;
+                //compMoves has a math.random function that will return 0/1/2, i add one to get standard 1/2/3 digits
+                var compMove = Math.floor(Math.random() * Math.floor(3)) + 1;
+                var textCompMove = "";
+                var outCome = "";
+                
+                //Turnin pMove into an int variable for the win calculation
+                if(pMove == "Rock" || pMove == "rock" ){
+                        intPMove = 1;
+                }else if(pMove == "Paper" || pMove == "paper"){
+                        intPMove = 2;
+                }else{
+                        intPMove = 3;
+                }
+                console.log(intPMove);
+                //Turns the comp move from int to a String for later use in the history Text box.
+                if(compMove == 1 ){
+                    textCompMove = "Rock";
+                }else if(compMove == 2){
+                    textCompMove = "Paper";
+                }else{
+                    textCompMove = "Scisssors";
+                }
+                //Calculates the wins for the computer
+                if(compMove == 1 && intPMove == 3){
+                    outCome = "The computer chose Rock! Rock breaks Scissors!! You LOSE!";
+                }else if(compMove == 2 && intPMove == 1){
+                    outCome = "The computer chose Paper! Paper covers Rock!! You LOSE!";
+                }else if(compMove == 3 && intPMove == 2){
+                    outCome = "The computer chose Scissors! Scissors cut Paper!! You LOSE!"
+                }
+                //Calculateds the wins for the player
+                else if( intPMove== 1 && compMove == 3){
+                    outCome = "The computer chose Scissors! Rock breaks Scissors!! You WIN!";
+                }else if( intPMove== 2 && compMove == 1){
+                    outCome = "The computer chose Rock! Paper covers Rock!! You WIN!";
+                }else if( intPMove== 3 && compMove == 2){
+                    outCome = "The computer chose Paper! Scissors cut Paper!! You WIN!"
+                }
+                // is a tie
+                else{
+                    outCome = "It's a TIE!!";
+                }
+                //Alert for the outcome of the Match
+                window.alert(outCome);
+                
+                //Appending the outcome to the textarea on a new line.
+                var myTextArea = document.getElementById("hText");
+                var appendText = "\n" + outCome;
+                document.getElementById("hText").append(appendText);
+            }
+        </script>
+    </head>
+    <body bgcolor="#F0EAD6">        
+            <div class="row">
+                    <div class="picColumn">
+                            <img src="gameImage2.jpg" alt="RockPaperScissors" style="width:100%">
+                    </div>
+                    <div class="textColumn">
+                        <il>
+                            <ul>Rock</ul>
+                            <ul>Paper</ul>
+                            <ul>Scissors</ul>
+                            <ul><input type="text" name="userChoice" id="a"></ul>
+                            <ul><input type="submit" name="sendChoice" value="Submit Choice" onclick="playerChoice()"></ul>
+                        </il>
+                    </div>
+                    <div class="textColumn" style="float: right">
+                        <textarea rows="40" cols="100" style="text-align: left" name="historyText" id="hText">History:</textarea> 
+                    </div>
+             </div> 
+    </body>
+    <footer class="footer">
+        Anthony Nagal
+        WebGameDevelopment
+        9/22/2019
+    </footer>
+    
+</html>
