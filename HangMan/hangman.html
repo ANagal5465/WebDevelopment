@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+        <meta charset="UTF-8"></meta>
+            <title>HangMan</title>
+            <style type="text/css">
+                canvas{
+                    border: 1px solid black;
+                }
+                body{
+                    margin: 0;
+                }
+            </style>
+    </head>
+    <body>
+        <canvas></canvas>
+        <script src="function.js"></script>
+        <div style=" width: 200px;float: left; height: 194px;border: blue; border-style: solid">
+                <p id='difficulty'>
+                        <label>Game Difficulty</label>            
+                            <form id="radio">
+                                    <label><input type="radio" name="radio" value="easy" id="easy">Easy</label>
+                                    <label><input type="radio" name="radio" value="medium" id="medium">Medium</label>
+                                    <label><input type="radio" name="radio" value="hard" id="hard">Hard</label>
+                            </form>
+                            <form id="submit">
+                                    <button type="button" name="submit" id="playButton">Play!</button> 
+                            </form>
+                            <form id="next">
+                                    <button type="button" name="submit" >NEXT MOVE!</button> 
+                            </form>
+                </p>       
+        </div>
+        <div style=" width: 200px; float: left; height: 194px; border: black; border-style: solid;">
+                Anthony Nagal
+                Web Game Development
+        </div>
+    </body>
+</html>
