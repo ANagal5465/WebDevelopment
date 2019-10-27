@@ -1,5 +1,15 @@
-#canvas{
-    border: 1px solid blue;
+
+header {
+    padding: 50px;
+    text-align: center;
+    background: grey;
+    color: white;
+    font-size: 25px;
+  }
+canvas{
+    float: left;
+    border: 2px solid black;
+    padding:0;
     padding-left: 0;
     padding-right: 0;
     margin-left: auto;
@@ -9,5 +19,14 @@
 
 }
 body {
-    background-color: grey;
+    background-color: #FFFFFF;
 }
+div {
+    float: left;
+    margin-right: 55px;
+  }
+
+* {
+    margin: 0;
+    padding: 0;
+    }

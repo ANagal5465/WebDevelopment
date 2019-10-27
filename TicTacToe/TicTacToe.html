@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <div></div>
+
 <head>
     <meta charset="utf-8" />
     <title>TicTacToe</title>
@@ -8,9 +9,35 @@
     <link rel="stylesheet" type="text/css" href="style.css" />
     <script type="text/javascript" src="Engine.js"></script>
 </head>
-    <body>
-        <!--canvas-->
-        <canvas id="canvas"></canvas>
-    </body>
+<header>
+    <h1> Tic Tac Toe! </h1>
+</header>
+
+<body>
+    <!--canvas-->
+    <div id="submissions">
+        <form>
+            <label>Board Color: <input type="text" name="bColor"> </label>
+            <input name="boardColor" type="button" onClick="changeBoardColor(bColor.value) " value="Change">
+        </form>
+        <form>
+            <label>X Color: &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="xColor"> </label>
+            <input name="Color" type="button" onClick="changeXColor(xColor.value) " value="Change">
+        </form>
+        <form>
+            <label>Circle Color: <input type="text" name="cColor"> </label>
+            <input name="circleColor" type="button" onClick="changeCircleColor(cColor.value) " value="Change">
+        </form>
+        <div>
+            You can alter the colors in the game with the above text submissions!<br>
+            Submitting nothing will set the values to black.
+        </div>
+    </div>
+    <canvas id="canvas"></canvas>
+</body>
 </div>
+<footer>
+
+</footer>
+
 </html>

@@ -13,6 +13,9 @@ var context;
 //example in document has two seperate variables to hold the players but it can also easily be done in 1.
 //player 1 = 1 player 2 = 2
 var currentPlayer;
+var xColor = 'black';
+var circleColor = 'black';
+var gridColor = 'black';
  
 //functions happen on pageload.
 window.onload = function () {
@@ -48,7 +51,7 @@ function drawGameBoard() {
     context.beginPath();
     context.moveTo(cellWidth, 0);
     context.lineTo(cellWidth, height);
-    context.strokeStyle = 'black';
+    context.strokeStyle = gridColor;
     context.lineWidth = 2;
     context.stroke();
     context.closePath();
@@ -57,7 +60,7 @@ function drawGameBoard() {
     context.beginPath();
     context.moveTo(cellWidth * 2, 0);
     context.lineTo(cellWidth * 2, height);
-    context.strokeStyle = 'black';
+    context.strokeStyle = gridColor;
     context.lineWidth = 2;
     context.stroke();
     context.closePath();
@@ -67,7 +70,7 @@ function drawGameBoard() {
     context.beginPath();
     context.moveTo(0, cellHeight);
     context.lineTo(width, cellHeight);
-    context.strokeStyle = 'black';
+    context.strokeStyle = gridColor;
     context.lineWidth = 2;
     context.stroke();
     context.closePath();
@@ -77,7 +80,7 @@ function drawGameBoard() {
     context.beginPath();
     context.moveTo(0, cellHeight * 2);
     context.lineTo(width, cellHeight * 2);
-    context.strokeStyle = 'black';
+    context.strokeStyle = gridColor;
     context.lineWidth = 2;
     context.stroke();
     context.closePath();
@@ -164,7 +167,7 @@ function drawX(cellX, cellY) {
     context.beginPath();
     context.moveTo(cellX * cellWidth, cellY * cellHeight);
     context.lineTo(cellX * cellWidth + cellWidth, cellY * cellHeight + cellHeight);
-    context.strokeStyle = 'yellow';
+    context.strokeStyle = xColor;
     context.lineWidth = 1;
     context.stroke();   
     context.closePath();
@@ -174,7 +177,7 @@ function drawX(cellX, cellY) {
     context.beginPath();
     context.moveTo(cellX * cellWidth + cellWidth, cellY * cellHeight);
     context.lineTo(cellX * cellWidth, cellY * cellHeight + cellHeight);
-    context.strokeStyle = 'yellow';
+    context.strokeStyle = xColor;
     context.lineWidth = 1;
     context.stroke();
     context.closePath();
@@ -185,13 +188,40 @@ function drawX(cellX, cellY) {
 function drawCircle(cellX, cellY) {
     context.beginPath();
     context.arc(cellX * cellWidth + cellWidth / 2, cellY * cellHeight + cellHeight / 2, cellWidth / 2, 0, 360, false);
-    context.strokeStyle = 'Red';
+    context.strokeStyle = circleColor;
     context.lineWidth = 1;
     context.stroke();
     context.closePath();
 
 }
- 
+
+ //Changes gridColor on function click to whatever is eneterd into the submit box.
+function changeBoardColor(BC){
+    if(BC == ""){
+        BC = 'black';
+    }
+    gridColor = BC;
+    refreshGame();
+    console.log(BC);
+}
+
+ //Changes xColor on function click to whatever is eneterd into the submit box.
+function changeXColor(XC){
+    if(XC == ""){
+        XC = 'black';
+    }
+    xColor = XC;
+    refreshGame();
+}
+
+ //Changes circleColor on function click to whatever is eneterd into the submit box.
+function changeCircleColor(CC){
+    if(CC == ""){
+        CC = 'black';
+    }
+    circleColor = CC;
+    refreshGame();
+}
 // Checks for Win/draw
 function checkSolved() {
  
@@ -236,4 +266,5 @@ function checkSolved() {
     if (isFull) {
         gameWon("Game Tied!!");
     }
+
 }
