@@ -1,6 +1,6 @@
 window.onload = function () {
 
-	var game = new Phaser.Game(320, 480, Phaser.CANVAS);
+	var game = new Phaser.Game(1000, 1000, Phaser.CANVAS);
 	//Bird variables 
 	var bird;
 	var birdWeight = 800;
@@ -12,28 +12,28 @@ window.onload = function () {
 	var lives = 0;
 	var livesObj;
 	var bonusLifeOnLevel = 0;
-
-
+	var lifeCounter = 0;
 	//Pipes Variables
 	var pipeGroup;
 	var pipeInterval = 1750;//time(ms) between pipes
-	var pipeHole = 175;
+	var pipeHole = 125;
 	var holePosition;
+
+	//Score Variables
+	var score = 0;
+	var scoreText;
+	var topScore;
 
 	//Speed Power Up Variables
 	var speedPowerUpCounter = 0;
 	var speedObj;
 	var speedBoostOnLevel = 0;
 	var gameSpeed = 1;
+	var speedRan = false;
 
 	//ExtraPointToken Variables
 	var pointObj;
 	var pointBoostOnLevel = 0;
-
-	//Score Variables
-	var score = 0;
-	var scoreText;
-	var topScore;
 
 	var play = function (game) { }
 
@@ -51,7 +51,7 @@ window.onload = function () {
 			//creating variables
 			pipeGroup = game.add.group();
 			score = 0;
-			lives = 3;
+			lives = 9999;
 
 			//code for score/topscore/lives
 			topScore = localStorage.getItem("top") == null ? 0 : localStorage.getItem("top");
@@ -81,23 +81,26 @@ window.onload = function () {
 		update: function () {
 			//Checks for collision with a pipe
 			game.physics.arcade.collide(bird, pipeGroup, die);
-
 			//This checks for when there is a bonus life active on the map 
 			//and then checks for a collision to add a life to the player's pool
 			if (bonusLifeOnLevel == 1) {
-				game.physics.arcade.collide(bird, livesObj, addLives);
+				game.physics.arcade.overlap(bird, livesObj, addLives);
 			}
 
 			if (speedBoostOnLevel == 1) {
-				game.physics.arcade.collide(bird, speedObj, increaseSpeed);
+				game.physics.arcade.overlap(bird, speedObj, increaseSpeed);
 			}
-			if(pointBoostOnLevel == 1){
-				game.physics.arcade.collide(bird, pointObj, freePoint);
+			if (pointBoostOnLevel == 1) {
+				game.physics.arcade.overlap(bird, pointObj, freePoint);
 			}
 
 			//Code that checks for when to spawn the extra life //every 5 points
 			extraLives();
-			speedPowerUp();
+			if(speedRan == false){
+				speedPowerUp();
+			}else{
+				//destroySpeedObj();
+			}
 
 			//Boundry check
 			if (bird.y > game.height) {
@@ -120,17 +123,27 @@ window.onload = function () {
 	//This function updates the score text and also checks when to allow powerups to spawn
 	function updateScore() {
 		scoreText.text = "Score: " + score + "\nBest: " + topScore;
-		if (score > 0 && score % 5 == 0 || score % 10 == 0) {
-			livesPowerUpCounter = 0;
-			speedPowerUpCounter = 0;
+		if (score > 0 && score % 5 == 0 || score > 0 && score % 10 == 0) {
+			console.log("Hello");
+			game.time.events.add(3000, function () {
+				bonusLifeOnLevel = 0;
+				speedPowerUpCounter = 0;
+			});
+			//livesPowerUpCounter = 0;
+			
+
 		}
-		if(score > 0 && pointBoostOnLevel == 0){
+		if (score > 0 && pointBoostOnLevel == 0) {
 			oneOutaFive = game.rnd.integerInRange(0, 20);
 			additionalPointPowerUp(oneOutaFive);
 		}
+
+		if (score == 35) {
+			game.time.events.add(1500, function () { game.time.events.loop(pipeInterval, addPipe); });
+		}
 	}
 
-	//This function controls the bird's flap
+	//This function controls the bird's movement
 	function flap() {
 		bird.body.velocity.y = -birdFlapPower;
 	}
@@ -177,13 +190,27 @@ window.onload = function () {
 	//DEATH FUNCTIONS
 
 	//This function controls the extra life tokens that spawn every 5 points//pipes
-	function extraLives() {
+	/*function extraLives() {
 		if (score != 0 && score % 10 == 0 && livesPowerUpCounter == 0) {
 			livesPowerUpCounter = livesPowerUpCounter + 1;
 			rndPosition = game.rnd.integerInRange(30, 420);
 			livesObj = game.add.sprite(80, game.rnd.between(75, rndPosition), "life");
 			game.physics.arcade.enable(livesObj);
 			bonusLifeOnLevel = 1;
+		}
+	}*/
+
+	function extraLives() {
+		var hasRan = false;
+		if (score != 0 && score % 10 == 0 && bonusLifeOnLevel == 0) {
+			if (hasRan) {
+				addLives(hasRan);
+			}
+			rndPosition = game.rnd.integerInRange(30, 420);
+			livesObj = game.add.sprite(80, game.rnd.between(75, rndPosition), "life");
+			game.physics.arcade.enable(livesObj);
+			bonusLifeOnLevel = 1;
+			hasRan = true;
 		}
 	}
 
@@ -192,7 +219,10 @@ window.onload = function () {
 		lives = lives + 1;
 		updateLives();
 		livesObj.kill();
-		bonusLifeOnLevel = 0;
+		game.time.events.add(1500, function () { bonusLifeOnLevel = 0; });
+		console.log("Life granted");
+		
+		
 	}
 
 	//This function controls when the user hits a pipe or leaves the bounds, 
@@ -201,12 +231,13 @@ window.onload = function () {
 		if (lives == 1) {
 			localStorage.setItem("top", Math.max(score, topScore));
 			game.state.start("Play");
-			gameSpeed = 1;
+			resetVariables();
 		}
 		else {
 			lives = lives - 1;
 			updateLives();
 			resetBird();
+
 		}
 	}
 
@@ -230,14 +261,32 @@ window.onload = function () {
 			speedObj = game.add.sprite(80, game.rnd.between(75, rndPosition), "speed");
 			game.physics.arcade.enable(speedObj);
 			speedBoostOnLevel = 1;
+			speedRan = true;
+			console.log("Speed power up spawned!");
 		}
+	}
+	function destroySpeedObj(){
+		speedObj.destroy();
+		speedRan = false;
+		console.log("Destroying speedObj");
 	}
 
 	//This function increases the speed
 	function increaseSpeed() {
-		gameSpeed = gameSpeed - .1;
-		game.time.slowMotion = gameSpeed;
+		if (gameSpeed > .7) {
+			gameSpeed = gameSpeed - .1;
+		} if (gameSpeed < .7 && gameSpeed > .4) {
+			gameSpeed = gameSpeed - .075;
+		}
+		if (gameSpeed < .4 && gameSpeed > .026) {
+			gameSpeed = gameSpeed - .025;
+		}
+		if (gameSpeed > .026) {
+			game.time.slowMotion = gameSpeed;
+		}
 		speedObj.kill();
+		destroySpeedObj();
+		console.log("Speed power up consumed new speed: " + gameSpeed);
 	}
 
 	//Player has a 1 in 5 chance of getting an extra point token every time they get a point
@@ -251,10 +300,41 @@ window.onload = function () {
 	}
 
 	//Function gives the player a free point and destroys the pointObj.
-	function freePoint(){
+	function freePoint() {
 		score = score + 1;
 		updateScore();
 		pointBoostOnLevel = 0;
 		pointObj.kill();
 	}
+
+	//This function bulkresets all of the game variables that need to be reset on final death
+	function resetVariables() {
+		bonusLifeOnLevel = 0;
+		livesPowerUpCounter = 0;
+		scoreCounterForExtraPipe = 0;
+		extraPipe = 1;
+		score = 0;
+		gameSpeed = 1;
+		speedPowerUpCounter = 0;
+		speedBoostOnLevel = 0;
+		pointBoostOnLevel = 0;
+		hasRan = false;
+	}
 }
+
+
+
+/*
+finish switching code from *livespowerupcounter* style to bonusLifeOnLevel style
+
+build function to figure out when its an appropriate time to spawn the next pipe(i believe adding it into the score area will be the way to go)
+
+if none of that works ditch everything and turn in as is.
+
+try to figure out how to ensure nothing else will spawn once something has already spawned for that score (LOOK AT CURRENT )
+
+
+REFERENCE CODE DESTROYSPEEDOBJECT AND DO EVERYTHING FROM THERE IT FIXES THE DOUBLE SPAWNS ASWELL AS THE NOT DESTROYING ISSUE
+
+
+*/
